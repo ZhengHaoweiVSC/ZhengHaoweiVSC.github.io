@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zheng Haowei's portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Wobbly pen-line filter used by the panel borders -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="5"/>
+        </filter>
+    </svg>
+
+    <div class="coffee"><img src="coffee.png" alt=""></div>
+
+    <header class="masthead">
+        <h1>Zheng Haowei</h1>
+        <p>Portfolio Website</p>
+    </header>
+
+    <main id="portfolio">
+        <article class="panel">
+            <div class="words">
+                <h2>Inclusive Rating Review Website</h2>
+                <p>A website with a self-made database, alongside a Gemini API AI insight tool that summarizes reviews, built with homemade HTML code and CSS styling.</p>
+                <p class="award">Won People’s Choice Awards</p>
+                <p><a href="https://github.com/el124-choi/swics_hackathon/blob/main/Website.html" target="_blank" rel="noopener">Inclusive Rating Review Website GitHub repository</a></p>
+            </div>
+            <div class="pic">
+                <img src="HackSWICS.jpg" alt="Inclusive Rating Review Website winning people's choice awards at SWICS" width="500" height="333">
+            </div>
+        </article>
+
+        <article class="panel">
+            <div class="words">
+                <h2>Roguelike Boat Game</h2>
+                <p>A procedurally generated roguelike boat game created at the HackSheffield Hackathon using the Unity engine and the C# programming language.</p>
+                <p class="award">Won HackSheffield Award</p>
+                <p><a href="https://github.com/ZhengHaoweiVSC/Hacksheffield" target="_blank" rel="noopener">HackSheffield Roguelike Boat Game GitHub repository</a></p>
+            </div>
+            <div class="pic">
+                <img src="Project Odyssey.png" alt="HackSheffield Roguelike Boat Game on dev post" width="500" height="333">
+            </div>
+        </article>
+
+        <article class="panel">
+            <div class="words">
+                <h2>Badly Brewed Coffee</h2>
+                <p>A website using a SQLite3 database, built with JavaScript, HTML, Ruby and GitHub, that lets customers order coffee and create accounts online, with many functions for baristas, admins, managers and more.</p>
+                <p class="award">Received a first class grade</p>
+                <pre class="slip"># Instructions to run the website
+git clone https://git.shefcompsci.org.uk/com1001-2025-26/team24/project.git
+cd project
+bundle install
+sinatra
+
+# Logins (username / password)
+admin1 / admin1
+customer / customer
+etc.</pre>
+            </div>
+            <div class="pic">
+                <img src="BadlyBrewCoffee.png" alt="Badly Brewed Coffee website" width="500" height="333">
+            </div>
+        </article>
+
+        <article class="panel">
+            <div class="words">
+                <h2>Flight Data Optimization Website</h2>
+                <p>A website capable of reading 120GB of data to find the most optimal flight path for a given flight, built at the Durham Hackathon.</p>
+            </div>
+            <div class="pic">
+                <p class="stat">120 GB</p>
+            </div>
+        </article>
+    </main>
+
+    <footer class="colophon"><p>More on my curriculum vitae~</p></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        const coffee = document.querySelector('.coffee');
+        const img = coffee.querySelector('img');
+        gsap.set(coffee, { xPercent: -50, yPercent: -50 });
+        gsap.set(img, { scale: 0.7 });
+
+        const mouse = { x: 0, y: 0 };
+        const cup = { x: 0, y: 0, s: 0.2 };
+
+        const MIN = 0.16, MAX = 0.6;
+        const FAR = 200;
+        const POP = 1.3;
+        const LAG = 0.05;
+
+        addEventListener('pointermove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            coffee.classList.add('on');
+        });
+
+        gsap.ticker.add(() => {
+            cup.x += (mouse.x - cup.x) * LAG;
+            cup.y += (mouse.y - cup.y) * LAG;
+
+            const t = Math.min(1, Math.hypot(mouse.x - cup.x, mouse.y - cup.y) / FAR);
+            cup.s += (MAX + (MIN - MAX) * t - cup.s) * 0.1;
+
+            gsap.set(coffee, { x: cup.x, y: cup.y, scale: cup.s });
+        });
+
+        addEventListener('pointerdown', e => {
+            const onCup = Math.hypot(e.clientX - cup.x, e.clientY - cup.y) < Math.max(40, 75 * cup.s);
+            if (onCup) gsap.to(img, { scale: POP, duration: 0.8, ease: 'elastic.out(1, 0.3)', overwrite: 'auto' });
+        });
+
+        addEventListener('pointerup', () => gsap.to(img, { scale: 0.7, duration: 0.3, overwrite: 'auto' }));
+    </script>
+</body>
+</html>
